@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage/
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
+*.log
+*.zip
+android-client/.gradle/
+android-client/**/build/
+android-client/local.properties
+android-client/.idea/
+android-client/*.jks
+android-client/*.keystore

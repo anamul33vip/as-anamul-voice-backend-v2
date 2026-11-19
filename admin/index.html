@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070914">
+  <title>AS ANAMUL VOICE · Admin</title>
+  <link rel="stylesheet" href="/assets/admin.css">
+  <script src="/assets/admin.js" defer></script>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <main id="login" class="login-shell hidden">
+    <section class="login-card panel">
+      <img class="brand-mark" src="/assets/logo.png" alt="AS ANAMUL VOICE emblem">
+      <p class="eyebrow">CONTROL ROOM · ADMIN</p>
+      <h1>AS ANAMUL <span>VOICE</span></h1>
+      <p class="muted">Backend, voice profiles, access keys এবং service status এখানে পরিচালনা করুন।</p>
+      <form id="login-form">
+        <label>Admin username<input name="username" autocomplete="username" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="button primary full" type="submit">SECURE LOGIN <span>↗</span></button>
+      </form>
+      <p id="login-error" class="feedback" role="status"></p>
+      <p class="tiny muted">প্রথমে server environment-এ admin credentials সেট করুন।</p>
+    </section>
+  </main>
+
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar panel">
+      <div class="brand-row"><img class="brand-mark small" src="/assets/logo.png" alt=""><div><strong>AS ANAMUL</strong><span>VOICE · CONTROL</span></div></div>
+      <div class="side-label">WORKSPACE</div>
+      <nav>
+        <button class="nav-item active" data-view="overview"><i>◈</i> Overview</button>
+        <button class="nav-item" data-view="voices"><i>◉</i> Voice profiles</button>
+        <button class="nav-item" data-view="keys"><i>⌘</i> App access keys</button>
+        <button class="nav-item" data-view="settings"><i>⚙</i> App settings</button>
+      </nav>
+      <div class="sidebar-bottom"><a href="https://t.me/crackffpanel" target="_blank" rel="noopener">Telegram support ↗</a><button id="logout" class="quiet">Sign out</button></div>
+    </aside>
+
+    <section class="main-area">
+      <header class="topbar">
+        <div><p class="eyebrow">SYSTEM CONSOLE / <span id="crumb">OVERVIEW</span></p><h1 id="page-title">Command center</h1></div>
+        <div class="top-actions"><span class="status-pill"><b class="pulse"></b> ADMIN SESSION</span><button id="refresh" class="button ghost">↻ Refresh</button></div>
+      </header>
+
+      <section id="view-overview" class="view active-view">
+        <div class="hero panel"><div><p class="eyebrow cyan">VOICE SYSTEM · LIVE</p><h2>Every voice.<br><span>Under control.</span></h2><p class="muted">Cartesia service, app access ও voice allowlist-এর বর্তমান অবস্থা এক জায়গায়।</p></div><div class="hero-orb"><div>AV</div></div></div>
+        <div class="stat-grid">
+          <article class="stat-card panel"><span>BACKEND</span><strong id="backend-status">—</strong><small id="uptime">Waiting for status</small></article>
+          <article class="stat-card panel"><span>CARTESIA KEY</span><strong id="key-status">—</strong><small>server environment only</small></article>
+          <article class="stat-card panel"><span>ACTIVE VOICES</span><strong id="voice-count">0</strong><small>enabled profiles</small></article>
+          <article class="stat-card panel"><span>APP ACCESS</span><strong id="access-count">0</strong><small>active keys</small></article>
+        </div>
+        <div class="section-head"><div><p class="eyebrow">UPSTREAM CHECK</p><h2>Cartesia connection</h2></div><button id="check-cartesia" class="button primary">Test connection <span>↗</span></button></div>
+        <article class="connection-card panel"><div class="connection-icon">↗</div><div><strong id="cartesia-result">Not checked in this session</strong><p id="cartesia-detail" class="muted">এটি server থেকে Cartesia voice-list endpoint-এ একটি authenticated health request করে।</p></div><span id="cartesia-badge" class="badge neutral">READY</span></article>
+        <p class="notice">Security note: Cartesia key কখনও browser বা Android app-এ পাঠানো হয় না। Health check কেবল key configured এবং provider request সফল কি না জানায়।</p>
+      </section>
+
+      <section id="view-voices" class="view">
+        <div class="section-head"><div><p class="eyebrow">AUTHORIZED VOICE IDS</p><h2>Voice profiles</h2><p class="muted">শুধু নিজের বা স্পষ্ট অনুমতিপ্রাপ্ত কণ্ঠের voice ID যোগ করুন।</p></div></div>
+        <form id="voice-form" class="form-card panel inline-form"><label>Display name<input name="name" maxlength="64" placeholder="My authorized voice" required></label><label>Cartesia Voice ID<input name="providerVoiceId" maxlength="180" placeholder="Voice ID" required></label><button class="button primary" type="submit">Add voice +</button></form>
+        <div id="voices-list" class="list-card panel"></div>
+      </section>
+
+      <section id="view-keys" class="view">
+        <div class="section-head"><div><p class="eyebrow">MOBILE CLIENT AUTH</p><h2>App access keys</h2><p class="muted">Key একবারই দেখানো হবে। নিরাপদে কপি করে app-এ ব্যবহার করুন।</p></div><button id="new-key" class="button primary">Create access key +</button></div>
+        <div id="new-key-result" class="secret-result hidden"></div>
+        <div id="keys-list" class="list-card panel"></div>
+      </section>
+
+      <section id="view-settings" class="view">
+        <div class="section-head"><div><p class="eyebrow">CLIENT CONFIGURATION</p><h2>App settings</h2><p class="muted">Android app-এ পাঠানো public configuration। Secret values এখানে দেখানো হয় না।</p></div></div>
+        <form id="settings-form" class="settings-card panel">
+          <label>App display name<input name="displayName" maxlength="64" required></label>
+          <label>Telegram URL<input name="telegramUrl" type="url" required></label>
+          <label>Cartesia model<select name="modelId"><option>sonic-3.6</option><option>sonic-3.5</option><option>sonic-3</option><option>sonic-latest</option></select></label>
+          <label>Language / locale<input name="language" maxlength="10" placeholder="bn"></label>
+          <label>Default voice<select name="defaultVoiceId" id="default-voice"><option value="">No default</option></select></label>
+          <div class="form-actions"><button class="button primary" type="submit">Save configuration</button><span id="settings-feedback" class="feedback"></span></div>
+        </form>
+      </section>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+</body>
+</html>

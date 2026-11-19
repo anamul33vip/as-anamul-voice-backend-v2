@@ -1,0 +1,1 @@
+{"version":1,"runtime":{"port":3000},"deploy":{"dockerfilePath":"Dockerfile","healthPath":"/healthz"}}

@@ -1,0 +1,21 @@
+{
+  "name": "as-anamul-voice-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "admin:reset": "node server/admin-reset.js",
+    "check": "node --check server/index.js && node --check server/admin-reset.js && node --check admin/admin.js"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "express-rate-limit": "8.1.0",
+    "helmet": "8.1.0"
+  }
+}
